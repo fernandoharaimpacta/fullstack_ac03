@@ -1,6 +1,10 @@
 import Header from "../../components/Header";
 import {useEffect, useState, useRef} from 'react';
 
+function ExcluirContinente(id) {
+    alert(id);
+}
+
 function ListarContinente() {
     const [list, setList] = useState([]);
     useEffect(()=>{
@@ -16,7 +20,11 @@ function ListarContinente() {
 
             <div>
                 {list.map(continente => 
-                <div key={continente.id}>{continente.nome}</div>)}
+                <div>
+                    <div key={continente.id}>{continente.nome}</div>
+                    <button onClick={() => ExcluirContinente(continente.id)}>Excluir</button>
+                </div>
+                )}
             </div>
         </div>
     );

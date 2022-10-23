@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from contextlib import closing
 import sqlite3
 from flask_cors import CORS
+from model import Model
 
 blueprint_continente = Blueprint('blueprint_continente', __name__)
 CORS(blueprint_continente)
@@ -83,19 +84,7 @@ def consultar_continente_nome(nome):
 
 @blueprint_continente.route("/listar_continentes", methods = ["GET"])
 def listar_continentes():
-    try:
-        with closing(conectar()) as con, closing(con.cursor()) as cursor:
-            sql = "SELECT continente_id, nome FROM CONTINENTE"
-            cursor.execute(sql)
-            rows = cursor.fetchall()
-            if len(rows) == 0:
-                return {"sucesso": False, "mensagem": "Não encontrado"}, 404
-            continentes = []
-            for row in rows:
-                continentes.append({"id": row[0], "nome": row[1]})
-            return {"sucesso": True, "continentes": continentes}, 200
-    except Exception:
-        return {"sucesso": False, "mensagem": "O servidor não está se comportando bem"}, 500
+    return Model.listar_continente()
 
 @blueprint_continente.route("/excluir_continente_id/<int:continente_id>", methods = ["DELETE"])
 def excluir_continente_id(continente_id):
